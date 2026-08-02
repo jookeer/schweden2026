@@ -1,4 +1,4 @@
-const CACHE='sweden26-v2';
+const CACHE='sweden26-v3';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png','./assets/alv.jpg','./assets/asnen.jpg','./assets/vaxjo.jpg','./assets/ikea.jpg'];
 
 self.addEventListener('install',event=>{

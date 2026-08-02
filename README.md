@@ -7,6 +7,7 @@ Installierbarer Offline-Reisebegleiter für den Familienurlaub in Småland vom 1
 - persönliche Profile für Annika, Julian, Anna Lena und Familie
 - wetter- und stimmungsabhängige Tagesvorschläge
 - Reiseplan mit Karten- und Navigationslinks
+- dauerhaft sichtbare Navigation zu beiden Ferienhäusern
 - lokal gespeicherte Packlisten und erledigte Reisetage
 - Offline-Nutzung als Progressive Web App
 
