@@ -1,5 +1,5 @@
-const CACHE='sweden26-v4';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png','./assets/alv.jpg','./assets/asnen.jpg','./assets/vaxjo.jpg','./assets/ikea.jpg'];
+const CACHE='sweden26-v5';
+const ASSETS=['./','./index.html','./features.js','./supabase-setup.sql','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png','./assets/alv.jpg','./assets/asnen.jpg','./assets/vaxjo.jpg','./assets/ikea.jpg'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
