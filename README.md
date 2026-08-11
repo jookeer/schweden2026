@@ -15,6 +15,7 @@ Installierbarer Offline-Reisebegleiter für den Familienurlaub in Småland vom 1
 - Familien-Abstimmung mit „Unbedingt“, „Vielleicht“ und „Keine Lust“
 - optionale gemeinsame Synchronisierung über Supabase
 - Öffnungszeiten-Warnungen und öffentlicher Offline-Notfallbereich
+- wettergerechte Familien-Packliste mit festen Stückzahlen und zusätzlichen Baby-/Kleinkindlisten für Annika
 - lokal gespeicherte Packlisten und erledigte Reisetage
 - Offline-Nutzung als Progressive Web App
 

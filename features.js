@@ -9,6 +9,46 @@
   const EMMAUS_HOURS = [null, [12, 18], [12, 18], [12, 18], [12, 18], [12, 18], [12, 15]];
   const OPENING_ACTIVITY_IDS = new Set(['16', '17', '18', '21', '23', '25', '26']);
   const WEATHER_CACHE_MS = 30 * 60 * 1000;
+  const ADULT_PACKING = [
+    ['15', 'Unterhosen'], ['15 Paar', 'Socken'], ['15', 'T-Shirts'], ['3', 'Langarmshirts'], ['3', 'Pullover oder Fleecejacken'],
+    ['4', 'lange Hosen'], ['3', 'kurze Hosen'], ['2', 'Schlafanzüge'], ['2', 'Badeoutfits'], ['1', 'Regenjacke'],
+    ['1', 'Regenhose'], ['1', 'leichte warme Jacke'], ['1', 'Sonnenhut oder Cap'], ['1', 'dünne Mütze'],
+    ['1 Paar', 'wasserdichte Schuhe'], ['1 Paar', 'Sneaker'], ['1 Paar', 'Sandalen oder Wasserschuhe']
+  ];
+  const BABY_PACKING = [
+    ['18', 'Bodys – 12 kurz, 6 lang (15 Tage + 3 Ersatz)'], ['15 Paar', 'Socken'], ['10', 'weiche Hosen oder Leggings'],
+    ['4', 'kurze Hosen oder Bloomers'], ['3', 'Pullover oder Cardigans'], ['3', 'Schlafanzüge'], ['2', 'Schlafsäcke in unterschiedlicher Wärme'],
+    ['1', 'Fleece- oder Wollanzug'], ['1', 'wasserdichter Matschanzug'], ['2', 'Sonnenhüte'], ['1', 'dünne Mütze'],
+    ['2', 'UV-Badeanzüge'], ['2', 'wiederverwendbare Schwimmwindeln'], ['10', 'Einweg-Schwimmwindeln'],
+    ['1 Paar', 'Wasserschuhe'], ['1 Paar', 'weiche geschlossene Schuhe'], ['100', 'Windeln – ca. 6 pro Tag plus 10 Reserve'],
+    ['6 Packungen', 'Feuchttücher'], ['3', 'Lätzchen'], ['2', 'Flaschen oder Trinklernbecher'], ['1', 'Babybesteck mit Schale'],
+    ['1', 'Wickelunterlage'], ['1 Tube', 'Wundschutzcreme'], ['2', 'Spannbettlaken'], ['1', 'Reisebett – nur falls von Airbnb nicht bestätigt'],
+    ['1', 'Babyphone'], ['1', 'kleines Nachtlicht'], ['1', 'vertrautes Kuscheltier oder Schmusetuch']
+  ];
+  const TODDLER_PACKING = [
+    ['18', 'Unterhosen – 15 Tage + 3 Ersatz'], ['18', 'T-Shirts – 15 Tage + 3 Ersatz'], ['15 Paar', 'Socken'],
+    ['6', 'Langarmshirts'], ['10', 'Hosen oder Leggings'], ['5', 'kurze Hosen'], ['3', 'Pullover oder Fleecejacken'],
+    ['3', 'Schlafanzüge'], ['2', 'Badeoutfits mit UV-Shirt'], ['1', 'Regenjacke'], ['1', 'Regenhose'],
+    ['1', 'leichte warme Jacke'], ['2', 'Sonnenhüte oder Caps'], ['1', 'dünne Mütze'], ['1 Paar', 'Gummistiefel'],
+    ['1 Paar', 'Sneaker'], ['1 Paar', 'Sandalen oder Wasserschuhe'], ['15', 'Nacht-Windelhosen, falls noch benötigt']
+  ];
+  const FAMILY_PACKING = [
+    ['5', 'Tagesrucksäcke – einer pro Person'], ['5', 'Trinkflaschen – eine pro Person'], ['2', 'Kinder-Rettungswesten in passender Größe'],
+    ['1', 'Kinderwagen'], ['1', 'Kinderwagen-Regenhülle'], ['1', 'Kinderwagen-Mückennetz'], ['1', 'Kinderwagen-Sonnenschutz'], ['1', 'Babytrage'],
+    ['2 Flaschen', 'Sonnencreme LSF 50 für die Kinder'], ['1', 'altersgerechter Mücken- und Zeckenschutz'], ['1', 'Zeckenzange oder Zeckenkarte'],
+    ['1', 'Reiseapotheke mit Fieberthermometer und gewohnten Medikamenten'], ['1', 'Erste-Hilfe-Set'], ['2', 'Powerbanks'],
+    ['1 Satz', 'Reisedokumente, Versicherungskarten und Buchungsunterlagen'], ['1', 'Auto-Ladekabel plus Ladekarten'],
+    ['1', 'Picknickdecke'], ['5', 'schnelltrocknende Badehandtücher'], ['1', 'Waschmittel für mindestens zwei Wäschen']
+  ];
+  const ESSENTIALS_PACKING = [
+    ['5', 'Zahnbürsten'], ['2 Tuben', 'Zahnpasta – Erwachsene und Kinder'], ['1', 'Shampoo'], ['1', 'Duschgel'],
+    ['1', 'Haarbürste oder Kamm'], ['1 Set', 'Nagelschere und Nagelfeile'], ['30', 'Windel- und Müllbeutel'], ['1', 'Kulturbeutel mit persönlichen Pflegeprodukten'],
+    ['15 Tage + 3 Dosen', 'persönliche Dauermedikamente als Reserve'], ['1', 'Fieber- und Schmerzmittel für Erwachsene'],
+    ['2 (1 je Kind)', 'vom Kinderarzt bekannte Fieber-/Schmerzmittel mit Dosierhilfe'], ['1', 'kleine Kühltasche mit zwei Kühlakkus'],
+    ['1 Tagesration', 'Babyessen, Milch und Familiensnacks für Anreise/ersten Abend'], ['5 Sets', 'wiederverwendbares Reisebesteck'],
+    ['1 je Gerät', 'Ladekabel für Handys, Uhren und Babyphone'], ['1', 'USB-Mehrfachladegerät'], ['1', 'Kamera oder genügend freier Handyspeicher'],
+    ['3', 'Sonnenbrillen für Erwachsene'], ['2', 'kindgerechte Sonnenbrillen'], ['1', 'Wäschebeutel für nasse und schmutzige Kleidung']
+  ];
   const parseStored = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const makeTripCode = () => `family-${crypto.randomUUID().slice(0, 8)}`;
@@ -38,7 +78,7 @@
   function installStyles() {
     if (document.getElementById('featureStyles')) return;
     document.head.insertAdjacentHTML('beforeend', `<style id="featureStyles">
-      .featurebar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.movebtn{border:1px solid var(--line);background:white;border-radius:12px;padding:9px 11px;font-weight:750;color:var(--ink)}.movebtn:disabled{opacity:.35}.liveweather{margin:11px 0;padding:12px;border-radius:16px;background:linear-gradient(135deg,#eef7fb,#fffdf8);border:1px solid #cbdde4}.liveweather strong{display:block}.weatherchoice{font-size:.78rem;font-weight:800;color:var(--forest)}.hourswarn{margin:10px 0;padding:11px;border-radius:14px;background:#fff1b9}.hourswarn.closed{background:#efd8d2}.hourswarn.open{background:#dfe9df}.votearea{margin:12px 0;padding:13px;border-radius:17px;background:#f4f7f4}.votebuttons{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:9px 0}.votebtn{border:1px solid var(--line);background:white;border-radius:12px;padding:9px 5px;font-size:.78rem}.votebtn.active{background:var(--forest);color:white}.votesummary{font-size:.79rem;color:var(--muted)}.syncgrid{display:grid;gap:10px}.syncgrid label{display:grid;gap:4px;font-weight:750}.syncgrid input{border:1px solid var(--line);background:#fffdf8;border-radius:13px;padding:11px;font:inherit;width:100%}.syncstatus{padding:10px 12px;border-radius:13px;background:var(--sage);margin:10px 0}.syncstatus.error{background:var(--rose)}.syncstatus.busy{background:var(--sky)}.emergencygrid{display:grid;gap:12px}.emergencycard h3{margin:4px 0;font:1.35rem Georgia,serif}.call{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:var(--forest);color:white;border-radius:13px;padding:10px 12px;font-weight:800;margin:4px 4px 4px 0}.call.alt{background:var(--sage);color:var(--ink)}.tiny{font-size:.76rem}.shopstatus{display:inline-block;margin:4px 0 8px;padding:6px 9px;border-radius:999px;background:var(--sage);font-size:.78rem;font-weight:800}.shopstatus.closed{background:var(--rose)}.shopstatus.soon{background:#fff1b9}details.setup{margin-top:12px}details.setup summary{cursor:pointer;font-weight:800}@media(min-width:760px){.emergencygrid{grid-template-columns:1fr 1fr}.syncgrid{grid-template-columns:1fr 1fr}.syncgrid .wide{grid-column:1/-1}}
+      .featurebar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.movebtn{border:1px solid var(--line);background:white;border-radius:12px;padding:9px 11px;font-weight:750;color:var(--ink)}.movebtn:disabled{opacity:.35}.liveweather{margin:11px 0;padding:12px;border-radius:16px;background:linear-gradient(135deg,#eef7fb,#fffdf8);border:1px solid #cbdde4}.liveweather strong{display:block}.weatherchoice{font-size:.78rem;font-weight:800;color:var(--forest)}.hourswarn{margin:10px 0;padding:11px;border-radius:14px;background:#fff1b9}.hourswarn.closed{background:#efd8d2}.hourswarn.open{background:#dfe9df}.votearea{margin:12px 0;padding:13px;border-radius:17px;background:#f4f7f4}.votebuttons{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:9px 0}.votebtn{border:1px solid var(--line);background:white;border-radius:12px;padding:9px 5px;font-size:.78rem}.votebtn.active{background:var(--forest);color:white}.votesummary{font-size:.79rem;color:var(--muted)}.syncgrid{display:grid;gap:10px}.syncgrid label{display:grid;gap:4px;font-weight:750}.syncgrid input{border:1px solid var(--line);background:#fffdf8;border-radius:13px;padding:11px;font:inherit;width:100%}.syncstatus{padding:10px 12px;border-radius:13px;background:var(--sage);margin:10px 0}.syncstatus.error{background:var(--rose)}.syncstatus.busy{background:var(--sky)}.emergencygrid{display:grid;gap:12px}.emergencycard h3{margin:4px 0;font:1.35rem Georgia,serif}.call{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:var(--forest);color:white;border-radius:13px;padding:10px 12px;font-weight:800;margin:4px 4px 4px 0}.call.alt{background:var(--sage);color:var(--ink)}.tiny{font-size:.76rem}.shopstatus{display:inline-block;margin:4px 0 8px;padding:6px 9px;border-radius:999px;background:var(--sage);font-size:.78rem;font-weight:800}.shopstatus.closed{background:var(--rose)}.shopstatus.soon{background:#fff1b9}details.setup{margin-top:12px}details.setup summary{cursor:pointer;font-weight:800}.packingintro{background:linear-gradient(135deg,#dbeaf1,#fffdf8)}.packingweather{padding:12px;border-radius:15px;background:#fff1b9;margin:12px 0}.packprogress{height:10px;border-radius:999px;background:#e4e8e5;overflow:hidden;margin:8px 0}.packprogress span{display:block;height:100%;background:var(--forest);transition:width .2s}.packgrid{display:grid;gap:12px;margin-top:12px}.packgroup h3{font:1.35rem Georgia,serif;margin:3px 0}.packitem{display:grid;grid-template-columns:25px 74px 1fr;gap:8px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}.packitem:last-child{border-bottom:0}.packitem input{width:21px;height:21px;margin:1px 0}.packqty{font-size:.76rem;font-weight:850;color:var(--forest);background:var(--sage);border-radius:9px;padding:3px 6px;text-align:center}.packitem:has(input:checked){opacity:.55;text-decoration:line-through}.annikaonly{border:2px solid #d9aeca}@media(min-width:760px){.emergencygrid{grid-template-columns:1fr 1fr}.syncgrid{grid-template-columns:1fr 1fr}.syncgrid .wide{grid-column:1/-1}.packgrid{grid-template-columns:1fr 1fr}}
     </style>`);
   }
 
@@ -55,9 +95,55 @@
           <article class="panel emergencycard"><div class="eyebrow">Apotheke finden</div><h3>Öffnungszeiten prüfen</h3><p>Für Medikamente außerhalb der genannten Zeiten zuerst 1177 fragen oder die aktuell geöffnete Apotheke suchen.</p><div class="actions"><a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Apotek+near+Växjö" target="_blank" rel="noopener">Bei Haus 1</a><a class="btn alt" href="https://www.google.com/maps/search/?api=1&amp;query=Apotek+near+Hulevik" target="_blank" rel="noopener">Bei Haus 2</a></div></article>
         </div></section>`);
     }
+    if (!document.getElementById('packing')) {
+      document.getElementById('stays').insertAdjacentHTML('beforebegin', `
+        <section id="packing"><h2>Was kommt mit?</h2><p class="muted">Wettergerechte Familien-Packliste für 15 Reisetage. Häkchen werden lokal gespeichert und bei eingerichteter Synchronisierung mit der Familie geteilt.</p><div id="tripPacking"></div></section>`);
+    }
     const forecastPanel = document.querySelector('#forecast .panel');
     if (forecastPanel && !document.getElementById('liveWeatherStatus')) forecastPanel.insertAdjacentHTML('beforeend', '<p class="muted" id="liveWeatherStatus">Live-Wetter wird geladen …</p>');
     decorateShopCards(); fillSyncForm(); bindSyncControls();
+  }
+
+  function visiblePackingGroups() {
+    const adultTitle = VOTERS.includes(profile) ? `Kleidung für ${profile}` : 'Kleidung je erwachsene Person';
+    const adultNote = VOTERS.includes(profile) ? '15 tägliche Garnituren, dazu wenige kombinierbare Wärmeschichten.' : 'Diese Menge gilt jeweils für Annika, Julian und Anna Lena.';
+    const groups = [
+      { id: 'adult', title: adultTitle, note: adultNote, items: ADULT_PACKING },
+      { id: 'family', title: 'Für alle & unterwegs', note: 'See, Wald, Autofahrt, Sonne, Regen und medizinische Basics.', items: FAMILY_PACKING },
+      { id: 'essentials', title: 'Pflege, Essen & Technik', note: 'Die Dinge, die zwischen Kleidung und Ausflügen leicht vergessen werden.', items: ESSENTIALS_PACKING }
+    ];
+    if (profile === 'Annika' || profile === 'Familie') {
+      groups.push(
+        { id: 'baby', title: 'Annikas Kinder · Baby, 11 Monate', note: 'Drei Ersatzgarnituren für Spucken, Essen und nasse Seetage.', items: BABY_PACKING, annika: true },
+        { id: 'toddler', title: 'Annikas Kinder · fast 3 Jahre', note: 'Drei Ersatz-Basics und mehr Hosen für Wald, Spielplatz und Matsch.', items: TODDLER_PACKING, annika: true }
+      );
+    }
+    return groups;
+  }
+  function packingWeatherText() {
+    const forecast = BASE_IDS.map(weatherForDate).filter(Boolean);
+    if (!forecast.length) return 'Småland im August kann warme Badetage, kühle Abende und kräftige Schauer in derselben Woche bringen. Deshalb bleiben Sonne, Regen und eine warme Schicht gleichzeitig auf der Liste.';
+    const hot = forecast.filter(day => Number(day.max) >= 25).length;
+    const rainy = forecast.filter(day => Number(day.probability) >= 50 || Number(day.precipitation) >= 2).length;
+    const cool = forecast.filter(day => Number(day.min) <= 12).length;
+    const hotText = hot === 1 ? '1 heißer Tag' : `${hot} heiße Tage`, rainyText = rainy === 1 ? '1 deutlich nasser Tag' : `${rainy} deutlich nasse Tage`, coolText = cool === 1 ? '1 kühle Nacht' : `${cool} kühle Nächte`;
+    return `Aktuell verfügbarer Live-Trend: ${forecast.length} Urlaubstage · ${hotText} ab 25 °C · ${rainyText} · ${coolText} bis 12 °C. Darum: Badesachen und LSF 50 genauso einpacken wie Regenzeug, Fleece und wasserdichte Schuhe.`;
+  }
+  function packingKey(group, index) { return `trip_${group.id}_${index}`; }
+  function updatePackingProgress(groups = visiblePackingGroups()) {
+    const keys = groups.flatMap(group => group.items.map((item, index) => packingKey(group, index)));
+    const checked = keys.filter(key => packs[key]).length, percent = keys.length ? Math.round(checked / keys.length * 100) : 0;
+    const text = document.getElementById('packingProgressText'), bar = document.querySelector('#packingProgress span');
+    if (text) text.textContent = `${checked} von ${keys.length} Punkten gepackt`;
+    if (bar) bar.style.width = `${percent}%`;
+  }
+  function renderPackingList() {
+    const root = document.getElementById('tripPacking'); if (!root) return;
+    const groups = visiblePackingGroups();
+    const childHint = profile === 'Annika' ? 'Die beiden Kinderlisten werden in Annikas Profil zusätzlich angezeigt.' : profile === 'Familie' ? 'In der Familienansicht sind auch Annikas beide Kinderlisten sichtbar.' : 'Die beiden Kinderlisten erscheinen zusätzlich im Profil Annika und in der Familienansicht.';
+    root.innerHTML = `<article class="panel packingintro"><div class="eyebrow">Berechnet für 14.–28. August 2026</div><p><b>15 Tage · 3 Erwachsene · ein Baby mit 11 Monaten · ein Kind mit fast 3 Jahren</b></p><p>Unterwäsche, Socken und T-Shirts sind für jeden Tag eingeplant. Bei den Kindern kommen drei Ersatz-Basics dazu. Nur die kombinierbaren Außenschichten bleiben bewusst knapp: drei Pullover, eine Regenjacke und eine Regenhose pro Person.</p><div class="packingweather"><b>🌦 Wetter-Abgleich</b><br>${escapeHtml(packingWeatherText())}</div><p class="muted">Beide Häuser haben eine Waschmaschine. Die Mengen funktionieren trotzdem ohne Pflichtwäsche; Waschen ist nur Reserve für Matsch, Eis und Windelunfälle. ${escapeHtml(childHint)}</p><b id="packingProgressText"></b><div class="packprogress" aria-hidden="true"><span></span></div></article><div class="packgrid">${groups.map(group => `<article class="panel packgroup ${group.annika ? 'annikaonly' : ''}"><div class="eyebrow">${group.annika ? 'Nur Annika & Familie' : 'Gemeinsam abhaken'}</div><h3>${escapeHtml(group.title)}</h3><p class="muted">${escapeHtml(group.note)}</p>${group.items.map((item, index) => { const key = packingKey(group, index); return `<label class="packitem"><input type="checkbox" data-trip-pack="${key}" ${packs[key] ? 'checked' : ''}><span class="packqty">${escapeHtml(item[0])}</span><span>${escapeHtml(item[1])}</span></label>`; }).join('')}</article>`).join('')}</div>`;
+    document.querySelectorAll('[data-trip-pack]').forEach(input => input.onchange = () => { packs[input.dataset.tripPack] = input.checked; localStorage.setItem('swedenPacks', JSON.stringify(packs)); updatePackingProgress(groups); scheduleSync(); });
+    updatePackingProgress(groups);
   }
 
   function swedenClock() {
@@ -156,7 +242,7 @@
     document.querySelectorAll('[data-edit]').forEach(button => button.onclick = () => enhancedOpenEditor(button.dataset.edit));
     document.querySelectorAll('[data-move]').forEach(button => button.onclick = () => moveActivity(button.dataset.slot, Number(button.dataset.move)));
     document.querySelectorAll('[data-vote]').forEach(button => button.onclick = () => castVote(button.dataset.activity, button.dataset.vote, button.closest('.card').dataset.date));
-    enhancedRecs(document.querySelector('.filter.active')?.dataset.f || 'all'); openDates.forEach(date => document.querySelector(`[data-date="${date}"]`)?.classList.add('open')); decorateShopCards();
+    enhancedRecs(document.querySelector('.filter.active')?.dataset.f || 'all'); openDates.forEach(date => document.querySelector(`[data-date="${date}"]`)?.classList.add('open')); decorateShopCards(); renderPackingList();
   }
   function moveActivity(slotId, direction) {
     const slotIndex = BASE_IDS.indexOf(slotId), targetIndex = slotIndex + direction;

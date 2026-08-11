@@ -1,4 +1,4 @@
-const CACHE='sweden26-v5';
+const CACHE='sweden26-v6';
 const ASSETS=['./','./index.html','./features.js','./supabase-setup.sql','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png','./assets/alv.jpg','./assets/asnen.jpg','./assets/vaxjo.jpg','./assets/ikea.jpg'];
 
 self.addEventListener('install',event=>{
