@@ -1,4 +1,4 @@
-# Schweden 2026
+# We are Family in Schweden
 
 Installierbarer Offline-Reisebegleiter für den Familienurlaub in Småland vom 14. bis 28. August 2026.
 
@@ -8,6 +8,8 @@ Installierbarer Offline-Reisebegleiter für den Familienurlaub in Småland vom 1
 - wetter- und stimmungsabhängige Tagesvorschläge
 - Reiseplan mit Karten- und Navigationslinks
 - dauerhaft sichtbare Navigation zu beiden Ferienhäusern
+- Unterkunftsdetails und Växjö-Secondhand-Tipps
+- lokal änderbare Tagesaktionen für Übersicht und Detailansicht
 - lokal gespeicherte Packlisten und erledigte Reisetage
 - Offline-Nutzung als Progressive Web App
 
